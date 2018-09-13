@@ -17,17 +17,17 @@ class AlarmBroadcastReceiver: BroadcastReceiver() {
 
         //作成したSimpleAlertDialogを表示する、AlarmBroadcastReceiverでアラーム時間になったことを受け取ったら、ダイアログを表示
         //アクティビティを呼ぶためのインテントを作成
-        val intent = Intent(context, MainActivity::class.java)
+        /*val intent = Intent(context, MainActivity::class.java)
                 //インテントに追加情報を格納
                 .putExtra("onReceive" ,true)
                 //BroadcastReceiverからアクテビティを呼び出すには、インテントにIntent.FLAG_ACTIVITY_NEW_TASKフラッグをつけておく必要がある
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         //onReceiveメソッドに渡される
-        context?.startActivity(intent)
+        context?.startActivity(intent)*/
         //Ankoを使って上記のコードを書き換え
-        /*context?.run{
+        context?.run{
             startActivity(intentFor<MainActivity>("onReceive" to true).newTask())
-        }*/
+        }
 
 
     }

@@ -11,66 +11,72 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v4.content.ContextCompat.getSystemService
+import android.text.format.DateFormat
+import android.view.WindowManager.LayoutParams
+import android.view.Window
 import android.view.WindowManager.LayoutParams.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
-import java.text.DateFormat
 import java.text.ParseException
 import java.util.*
-import java.util.regex.Pattern
+//import java.util.regex.Pattern
+
+
 
 class MainActivity : AppCompatActivity()
-    , SimpleAlertDialog.OnClickListener{//ダイアログのボタンが押されたときの処理Dialogs.ktのクラス読み出し
-    /*,DatePickerFragment.OnDateSelectedListener//
+    , SimpleAlertDialog.OnClickListener//ダイアログのボタンが押されたときの処理Dialogs.ktのクラス読み出し
+        // 日付を選択するインターフェイス実行
+    ,DatePickerFragment.OnDateSelectedListener
+        //時間を選択するインターフェイス実行
     ,TimePickerFragment.OnTimeSelectedListener {
 
-    override fun onSelected(year: Int, month: Int, date: Int) {
-        val c = Calendar.getInstance()
-        c.set(year, month, date)
-        dateText.text = DateFormat.format("yyyy/MM/dd", c)
-    }
+        override fun onSelected(year: Int, month: Int, date: Int) {
+            val c = Calendar.getInstance()
+            c.set(year, month, date)
+            dateText.text = DateFormat.format("yyyy/MM/dd", c)
+        }
 
-    override fun onSelected(hourOfDay: Int, minute: Int) {
-        timeText.text = "%1$02d:%2$02d".format(hourOfDay, minute)
-    }
-    */
-    //Dialogs.kt内のsetPositiveButtonクラスであれば終了
-    override fun onPositiveClick() {
-        finish()
-    }
+        override fun onSelected(hourOfDay: Int, minute: Int) {
+            timeText.text = "%1$02d:%2$02d".format(hourOfDay, minute)
+        }
 
-    //Dialogs.kt内のsetNegativeButtonクラスであれば５分後に同じ要求画面
-    override fun onNegativeClick() {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = System.currentTimeMillis()
-        calendar.add(Calendar.MINUTE, 5)
-        setAlarmManager(calendar)
-        finish()
-    }
+        //Dialogs.kt内のsetPositiveButtonクラスであれば終了
+        override fun onPositiveClick() {
+            finish()
+        }
+
+        //Dialogs.kt内のsetNegativeButtonクラスであれば５分後に同じ要求画面
+        override fun onNegativeClick() {
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = System.currentTimeMillis()
+            calendar.add(Calendar.MINUTE, 5)
+            setAlarmManager(calendar)
+            finish()
+        }
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
 
-        //エクストラのonReceiveにtrueが指定されて起動された場合にダイアログを表示するようにする
-        if (intent?.getBooleanExtra("onReceive", false) == true) {
-            /* // スリープを解除して画面を表示する昨日　
-               when {
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ->
-                    window.addFlags(FLAG_TURN_SCREEN_ON or FLAG_SHOW_WHEN_LOCKED)
-                else -> window.addFlags(FLAG_TURN_SCREEN_ON or FLAG_SHOW_WHEN_LOCKED
-                        or FLAG_DISMISS_KEYGUARD)
-            }*/
-            //SimpleAlertDialogのインスタンスを生成
-            val dialog = SimpleAlertDialog()
-            //showメソッドでdialogを表示
-            dialog.show(supportFragmentManager, "alert_dialog")
+            //エクストラのonReceiveにtrueが指定されて起動された場合にダイアログを表示するようにする
+            if (intent?.getBooleanExtra("onReceive", false) == true) {
+                // スリープを解除して画面を表示する機能　
+                when {
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ->
+                        window.addFlags(FLAG_TURN_SCREEN_ON or FLAG_SHOW_WHEN_LOCKED)
+                    else -> window.addFlags(FLAG_TURN_SCREEN_ON or FLAG_SHOW_WHEN_LOCKED
+                            or FLAG_DISMISS_KEYGUARD)
+                }
+                //SimpleAlertDialogのインスタンスを生成
+                val dialog = SimpleAlertDialog()
+                //showメソッドでdialogを表示
+                dialog.show(supportFragmentManager, "alert_dialog")
             }
 
             setContentView(R.layout.activity_main)
 
             setAlarm.setOnClickListener {
-               /* val date = "${dateText.text} ${timeText.text}".toDate()
+                val date = "${dateText.text} ${timeText.text}".toDate()
                 when {
                     date != null -> {
                         val calendar = Calendar.getInstance()
@@ -81,38 +87,37 @@ class MainActivity : AppCompatActivity()
                     else -> {
                         toast("日付の形式が正しくありません")
                     }
-                }*/
+                }
 
-            //ボタンをタップしたと時にcalendarクラスで現在の時間より5秒後の時間を作成
-            //getInstanceでcalendarクラスのインスタンスを取得
-            val calendar = Calendar.getInstance()
-            //calendarへの時間設定はtimeInMillsプロパティでアクセス、System.currentTimeMillisメソッドで現在の時刻設定
-            calendar.timeInMillis = System.currentTimeMillis()
-            //addメソッドでCalendarに設定している時刻を編集、引数には編集したい場所と値を渡す
-            calendar.add(Calendar.SECOND, 5)
-            //setAlarmManager関数にcalendarクラスのインスタンスを渡す
-            setAlarmManager(calendar)
+                /*//ボタンをタップしたと時にcalendarクラスで現在の時間より5秒後の時間を作成
+                //getInstanceでcalendarクラスのインスタンスを取得
+                val calendar = Calendar.getInstance()
+                //calendarへの時間設定はtimeInMillsプロパティでアクセス、System.currentTimeMillisメソッドで現在の時刻設定
+                calendar.timeInMillis = System.currentTimeMillis()
+                //addメソッドでCalendarに設定している時刻を編集、引数には編集したい場所と値を渡す
+                calendar.add(Calendar.SECOND, 5)
+                //setAlarmManager関数にcalendarクラスのインスタンスを渡す
+                setAlarmManager(calendar)*/
 
             }
-
 
 
             //ボタンをタップしたらアラームをキャンセル
             cancelAlarm.setOnClickListener {
                 cancelAlarmManager()
             }
-            /*dateText.setOnClickListener {
+            dateText.setOnClickListener {
                 val dialog = DatePickerFragment()
                 dialog.show(supportFragmentManager, "date_dialog")
             }
             timeText.setOnClickListener {
                 val dialog = TimePickerFragment()
                 dialog.show(supportFragmentManager, "time_dialog")
-            }*/
+            }
 
         }
 
-
+    
 
         //このアノテーションをつけることにより、android4.1でも使えるようにする
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -154,7 +159,7 @@ class MainActivity : AppCompatActivity()
             am.cancel(pending)
         }
 
-        /*fun String.toDate(pattern: String = "yyyyy/MM/dd HH:mm"): Date? {
+        fun String.toDate(pattern: String = "yyyyy/MM/dd HH:mm"): Date? {
             val sdFormat = try {
                 SimpleDateFormat(pattern)
             } catch (e: IllegalArgumentException) {
@@ -168,6 +173,6 @@ class MainActivity : AppCompatActivity()
                 }
             }
             return date
-        }*/
+        }
     }
 

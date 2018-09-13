@@ -50,16 +50,16 @@ class SimpleAlertDialog : DialogFragment(){
             //ダイアログに表示する1番目のボタンを設定
             setPositiveButton("起きる"){ dialog, which ->
 
-                //listener.onPositiveClick()
+                listener.onPositiveClick()
                 //toastクラスを使ってウィンドウの前面に一定時間メッセージを表示
-                context.toast("起きるがクリックされました")
+                //context.toast("起きるがクリックされました")
             }
             //ダイアログに表示する1番目のボタンを設定
             setNegativeButton("あと5分"){ dialog, which ->
 
-                //listener.onNegativeClick()
+                listener.onNegativeClick()
                 //toastクラスを使ってウィンドウの前面に一定時間メッセージを表示
-                context.toast("あと5分がクリックされました")
+                //context.toast("あと5分がクリックされました")
             }
         }
         return builder.create()
@@ -68,7 +68,7 @@ class SimpleAlertDialog : DialogFragment(){
 }
 //日付を選択するダイアログを作る
 //DatePickerDialogを使う場合DialogFragmentを継承, DatePickerDialog.OnDateSetListenerインターフェイスを実装
-/*class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener{
+class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener{
 
     interface  OnDateSelectedListener{
         //年、月、日を引数にとるonSelected関数
@@ -128,4 +128,3 @@ class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener 
         listener.onSelected(hourOfDay, minute)
     }
 }
-        */
