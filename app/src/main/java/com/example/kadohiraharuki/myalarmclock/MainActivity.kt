@@ -12,14 +12,18 @@ import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v4.content.ContextCompat.getSystemService
 import android.text.format.DateFormat
-import android.view.WindowManager.LayoutParams
+import android.view.WindowManager
 import android.view.Window
 import android.view.WindowManager.LayoutParams.*
+import com.example.kadohiraharuki.myalarmclock.R.id.dateText
+import com.example.kadohiraharuki.myalarmclock.R.id.timeText
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
 import java.text.ParseException
 import java.util.*
-//import java.util.regex.Pattern
+import java.util.regex.Pattern
+import android.app.Activity;
+
 
 
 
@@ -76,6 +80,7 @@ class MainActivity : AppCompatActivity()
             setContentView(R.layout.activity_main)
 
             setAlarm.setOnClickListener {
+                //各テキストビューに表示されている日付と時間をDate型に変換
                 val date = "${dateText.text} ${timeText.text}".toDate()
                 when {
                     date != null -> {
